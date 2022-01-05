@@ -2,19 +2,19 @@ sudo: required
 services: 
   - docker
 before_install:
-- docker build -t krathi/react-test -f ./client/Dockerfile.dev ./client
+- docker build -t khanjan16/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true krathi/react-test npm test -- --coverage
+  - docker run -e CI=true khanjan16/react-test npm test -- --coverage
 
 after_sucess:
-  - docker build -t krathi/multi-client ./client
-  - docker build -t krathi/multi-nginx ./nginx
-  - docker build -t krathi/multi-server ./server
-  - docker build -t krathi/multi-worker ./worker
+  - docker build -t khanjan16/multi-client ./client
+  - docker build -t khanjan16/multi-nginx ./nginx
+  - docker build -t khanjan16/multi-server ./server
+  - docker build -t khanjan16/multi-worker ./worker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push krathi/multi-client
-  - docker push krathi/multi-nginx
-  - docker push krathi/multi-server
-  - docker push krathi/multi-worker
+  - docker push khanjan16/multi-client
+  - docker push khanjan16/multi-nginx
+  - docker push khanjan16/multi-server
+  - docker push khanjan16/multi-worker
 

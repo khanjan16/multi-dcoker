@@ -1,0 +1,20 @@
+sudo: required
+services: 
+  - docker
+before_install:
+- docker build -t krathi/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true krathi/react-test npm test -- --coverage
+
+after_sucess:
+  - docker build -t krathi/multi-client ./client
+  - docker build -t krathi/multi-nginx ./nginx
+  - docker build -t krathi/multi-server ./server
+  - docker build -t krathi/multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push krathi/multi-client
+  - docker push krathi/multi-nginx
+  - docker push krathi/multi-server
+  - docker push krathi/multi-worker
+
